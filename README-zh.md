@@ -1,4 +1,4 @@
-# vue-admin-template
+# McDonald Inventory management system (IMS)
 
 > 这是一个库存管理后台。
 
