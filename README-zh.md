@@ -2,7 +2,7 @@
 
 > 这是一个库存管理后台。
 
-[线上地址](http://panjiachen.github.io/vue-admin-template)
+[线上地址](http://yalibook.com)
 
 ## 相关项目
 
@@ -12,7 +12,7 @@
 
 ```bash
 # 克隆项目
-git clone https://github.com/PanJiaChen/vue-admin-template.git
+git clone https://gitee.com/sroxck/imsui.git
 
 # 进入项目目录
 cd vue-admin-template
