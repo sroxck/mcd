@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: '库存管理系统',
+  title: 'vue',
 
   /**
    * @type {boolean} true | false
