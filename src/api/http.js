@@ -6,7 +6,12 @@ var server = axios.create({
   
 })
 export default {
- 
+  signup(params) {
+    return this.post('signup',params)
+  },
+  signin(params) {
+    return this.post('signin',params)
+  },
   los(params){
     return this.post('add', params)
   },
