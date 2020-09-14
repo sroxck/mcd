@@ -2,27 +2,22 @@ import axios from 'axios'
 const CancelToken = axios.CancelToken;
 const source = CancelToken.source();
 var server = axios.create({
-  baseURL: '/ims-api',
-  headers: {
-    "content-type": "application/json",
-    "data-type": "json"
-  }
+  baseURL: 'http://localhost:3000/',
+  
 })
 export default {
-  login(params) {
-    return this.post('login', params)
+ 
+  los(params){
+    return this.post('add', params)
   },
-  logout(params) {
-    return this.post('logout', params)
-  },
-  get(url, params = {}) {
+  get(url, params ) {
     return server({
       url,
       params,
       method: 'get'
     })
   },
-  post(url, data = {}) {
+  post(url, data ) {
     return server({
       url,
       data,
