@@ -81,13 +81,13 @@ export const constantRoutes = [
     path: '/addSome',
     component: Layout,
     redirect: '/addSome/addKc',
-    meta: { title: '新增内容', icon: 'el-icon-s-help' },
+    meta: { title: '配件管理', icon: 'el-icon-s-help' },
     children: [
       {
         path: 'addKc',
         name: 'addKc',
         component: () => import('@/views/addSome/addKc'),
-        meta: { title: '新增配件', icon: 'table' }
+        meta: { title: '配件管理', icon: 'table' }
       },
     ]
   },
