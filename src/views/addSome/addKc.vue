@@ -1,14 +1,18 @@
 <template>
   <div class="app-container">
-    <el-button style="width:100%" @click="this.dialogFormVisible = true">新增配件</el-button>
+    <el-button style="width:100%" @click="dialogFormVisible = true">新增配件</el-button>
     <el-dialog title="新增配件" :visible.sync="dialogFormVisible">
       <el-form :model="form">
-        <el-form-item label="配件名称" :label-width="formLabelWidth">
-          <el-input v-model="form.name" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="配件数量" :label-width="formLabelWidth">
-          <el-input v-model="form.num" autocomplete="off"></el-input>
-        </el-form-item>
+        <el-button @click="form.data.push({})">新增一行</el-button>
+        <el-row v-for="(item,index) in form.data" :key="index">
+          <el-form-item label="配件名称" :label-width="formLabelWidth">
+            <el-input v-model="item.name" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="配件数量" :label-width="formLabelWidth">
+            <el-input v-model="item.num" autocomplete="off"></el-input>
+          </el-form-item>
+        </el-row>
+        
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -38,7 +42,11 @@ export default {
       listLoading:false,
       dialogTableVisible: false,
       dialogFormVisible: false,
-      form: {},
+      form: {
+        data:[
+
+        ]
+      },
       formLabelWidth: "120px",
     };
   },
