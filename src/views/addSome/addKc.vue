@@ -1,7 +1,10 @@
 <template>
   <div class="app-container">
     <el-row>
-    <el-button style="width:100%" @click="dialogFormVisible = true">新增配件</el-button>
+       <el-input placeholder="请输入配件名称,按回车查询" prefix-icon="el-icon-search" v-model="query" @change="queryTable" style="width:280px;">
+  </el-input>
+    <el-button style="" @click="dialogFormVisible = true">新增配件</el-button>
+    <el-button style="" @click="getList()">重置</el-button>
     </el-row>
     <el-row>
     </el-row>
@@ -124,6 +127,7 @@ export default {
       grop:{
         data:[{}]
       },
+      query:'',
       tableList: [],
       listLoading: false,
       dialogTableVisible: false,
@@ -154,6 +158,15 @@ export default {
     this.getList();
   },
   methods: {
+    queryTable(){
+      console.log(this.query)
+      this.http.QueryPeijian({query:this.query}).then((res) => {
+        this.tableList = res.data;
+        this.listLoading = false;
+        this.form.totalRow = res.total
+      });
+      this.query = ''
+    },
     remove(id) {
       this.http.removePeiJian({ id }).then((res) => {
         if (res.code == 200) {
@@ -200,7 +213,11 @@ export default {
     },
     getList() {
       this.listLoading = true;
-      this.http.QueryPeijian({}).then((res) => {
+      let info = {
+        pageNumber:this.form.pageNumber,
+        pageSize:this.form.pageSize
+      }
+      this.http.QueryPeijian(info).then((res) => {
         this.tableList = res.data;
         this.listLoading = false;
         this.form.totalRow = res.total
