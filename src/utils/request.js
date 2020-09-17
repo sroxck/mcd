@@ -5,7 +5,7 @@ import { getToken } from '@/utils/auth'
 
 // 创建一个axios实例
 const service = axios.create({
-  baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
+  baseURL: 'http://localhost:3000/', // url = base url + request url
   // withCredentials: true, // 当跨域请求时发送cookie
   timeout: 5000 // request timeout
 })
@@ -43,7 +43,7 @@ service.interceptors.response.use(
 	 */
   response => {
     const res = response.data
-
+console.log(res,'sss')
     /// 如果自定义代码不是200，则判断为错误。
     if (res.code !== 20000) {
       Message({
@@ -65,9 +65,9 @@ service.interceptors.response.use(
           })
         })
       }
-      return Promise.reject(new Error(res.message || 'Error'))
+      return Promise.reject(new Error(res.msg || 'Error'))
     } else {
-      return res
+      return res.data
     }
   },
   error => {

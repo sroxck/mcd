@@ -3,16 +3,21 @@
     <div class="form-container sign-up-container">
       <form action="#">
         <h1>注 册</h1>
-        <input type="" v-model="form.username" placeholder="账号" style="outline:none" />
+        <input type v-model="form.username" placeholder="账号" style="outline:none" />
         <input type="password" v-model="form.password" placeholder="密码" style="outline:none" />
-        <input type="password" v-model="form.confirmPassword" placeholder="确认密码" style="outline:none" />
+        <input
+          type="password"
+          v-model="form.confirmPassword"
+          placeholder="确认密码"
+          style="outline:none"
+        />
         <button @click.prevent="signup">注册</button>
       </form>
     </div>
     <div class="form-container sign-in-container">
       <form action="#">
         <h1>登 录</h1>
-        <input type="" v-model="form.username" placeholder="账号" style="outline:none" />
+        <input type v-model="form.username" placeholder="账号" style="outline:none" />
         <input type="password" v-model="form.password" placeholder="密码" style="outline:none" />
         <a href="#">忘记密码？</a>
         <button @click="signin">登录</button>
@@ -47,31 +52,40 @@ export default {
   },
   watch: {},
   mounted() {
-      this.init()
+    this.init();
   },
   methods: {
     init() {
       const signUpButton = document.getElementById("signUp");
       const signInButton = document.getElementById("signIn");
       const container = document.getElementById("container");
-      signUpButton.addEventListener("click", () => container.classList.add("right-panel-active"));
-      signInButton.addEventListener("click", () => container.classList.remove("right-panel-active"));
+      signUpButton.addEventListener("click", () =>
+        container.classList.add("right-panel-active")
+      );
+      signInButton.addEventListener("click", () =>
+        container.classList.remove("right-panel-active")
+      );
     },
     async signup() {
-        if (this.form.password != this.form.confirmPassword) return this.$notify.info('密码输入不一致,请重新输入')
-        const {data} = await this.http.signup(this.form)
-        data.code == 200 ? this.$notify.success('注册成功') : this.$notify.error('注册失败')
+      if (this.form.password != this.form.confirmPassword)
+        return this.$notify.info("密码输入不一致,请重新输入");
+      const { data } = await this.http.signup(this.form);
+      data.code == 200
+        ? this.$notify.success("注册成功")
+        : this.$notify.error("注册失败");
     },
     async signin() {
-        const {data} = await this.http.signin(this.form)
-        data.code == 200 ? this.$router.push({path:'form'}) :this.$notify.error('登录失败')
-    }
+      const { data } = await this.http.signin(this.form);
+      data.code == 200
+        ? this.$router.push({ path: "form" })
+        : this.$notify.error("登录失败");
+    },
   },
 };
 </script>
 
 
-<style lang="scss" >
+<style lang="scss" scoped>
 * {
   margin: 0;
   padding: 0;
@@ -88,23 +102,23 @@ body {
   height: 100vh;
 }
 
-h1 {
+.container h1 {
   font-weight: bold;
   margin: 0;
 }
 
-p {
+.container p {
   font-size: 14px;
   line-height: 20px;
   letter-spacing: 0.5px;
   margin: 20px 0 30px;
 }
 
-span {
+.container span {
   font-size: 12px;
 }
 
-a {
+.container a {
   color: #333;
   font-size: 14px;
   text-decoration: none;
@@ -113,7 +127,9 @@ a {
 
 /* container */
 .container {
-  margin-top: 50%;
+  margin: 0 auto;
+  position: relative;
+  top: 50%;
   transform: translateY(-50%);
   background: #fff;
   border-radius: 10px;
@@ -159,7 +175,7 @@ a {
   width: 100%;
 }
 
-button {
+.container button {
   border-radius: 20px;
   border: 1px solid #ff4b2b;
   background: #ff4b2b;
@@ -171,15 +187,15 @@ button {
   transition: transform 80ms ease-in;
 }
 
-button:active {
+.container button:active {
   transform: scale(0.95);
 }
 
-button:focus {
+.container button:focus {
   outline: none;
 }
 
-button.ghost {
+.container button.ghost {
   background: transparent;
   border-color: #fff;
 }

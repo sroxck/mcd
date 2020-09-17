@@ -5,12 +5,25 @@ var server = axios.create({
   baseURL: 'http://localhost:3000/',
   
 })
+
+server.interceptors.response.use(
+ response => {
+   return response.data
+ }
+)
+
 export default {
   signup(params) {
     return this.post('signup',params)
   },
   signin(params) {
     return this.post('signin',params)
+  },
+  addPeijian(params) {
+    return this.post('/addPeijian',params)
+  },
+  QueryPeijian(params) {
+    return this.post('/QueryPeijian',params)
   },
   los(params){
     return this.post('add', params)
