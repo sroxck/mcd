@@ -76,7 +76,7 @@ export const constantRoutes = [
       }
     ]
   },
-
+  
   {
     path: '/addSome',
     component: Layout,
@@ -88,6 +88,20 @@ export const constantRoutes = [
         name: 'addKc',
         component: () => import('@/views/addSome/addKc'),
         meta: { title: '配件管理', icon: 'table' }
+      },
+    ]
+  },
+  {
+    path: '/orderManage',
+    component: Layout,
+    redirect: '/orderManage/manage',
+    meta: { title: '配件管理', icon: 'el-icon-s-help' },
+    children: [
+      {
+        path: 'manage',
+        name: 'manage',
+        component: () => import('@/views/orderManage/index'),
+        meta: { title: '订单管理', icon: 'table' }
       },
     ]
   },

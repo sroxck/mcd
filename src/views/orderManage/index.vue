@@ -1,12 +1,39 @@
 <template>
   <div class="app-container">
-    <el-row style="margin-bottom:20px">
-       <el-input placeholder="请输入配件名称,按回车查询"  size="small" prefix-icon="el-icon-search" v-model="query" @change="queryTable" style="width:280px;">
-        </el-input>
-    <el-button  @click="dialogFormVisible = true" size="small" style="margin-left:10px;">新增配件</el-button>
-    <el-button style="" @click="getList()"  size="small">重置</el-button>
-    </el-row>
+    <el-form :inline="true">
+      <el-row>
+        <el-form-item label="EPS编号">
+          <el-input placeholder="请输入EPS编号" style="width:280px;"></el-input>
+        </el-form-item>
+        <el-form-item label="餐厅编号">
+          <el-input placeholder="请输入餐厅编号" style="width:280px;"></el-input>
+        </el-form-item>
+        <el-form-item label="餐厅名称">
+          <el-input placeholder="请输入餐厅名称" style="width:280px;"></el-input>
+        </el-form-item>
+        <el-form-item label="维修人员">
+          <el-input placeholder="请输入维修人员" style="width:280px;"></el-input>
+        </el-form-item>
+      </el-row>
+      <el-row>
+        <el-form-item label="餐厅">
+          <el-input placeholder="请输入" style="width:280px;"></el-input>
+        </el-form-item>
+        <el-form-item label="餐厅">
+          <el-input placeholder="请输入" style="width:280px;"></el-input>
+        </el-form-item>
+        <el-form-item label="餐厅">
+          <el-input placeholder="请输入" style="width:280px;"></el-input>
+        </el-form-item>
+        <el-form-item label="餐厅">
+          <el-input placeholder="请输入" style="width:280px;"></el-input>
+        </el-form-item>
+      </el-row>
+    </el-form>
+
     <el-row>
+       <el-button style @click="dialogFormVisible = true">新增配件</el-button>
+        <el-button style @click="getList()">重置</el-button>
     </el-row>
     <el-dialog title="新增配件" :visible.sync="dialogFormVisible">
       <el-form :model="form">
@@ -18,16 +45,16 @@
           <el-form-item label="配件数量" :label-width="formLabelWidth">
             <el-input v-model="item.num" autocomplete="off"></el-input>
           </el-form-item>
-           <el-form-item label="配件厂商" :label-width="formLabelWidth">
+          <el-form-item label="配件厂商" :label-width="formLabelWidth">
             <el-input v-model="item.vendor" autocomplete="off"></el-input>
           </el-form-item>
-           <el-form-item label="配件进价" :label-width="formLabelWidth">
+          <el-form-item label="配件进价" :label-width="formLabelWidth">
             <el-input v-model="item.price" autocomplete="off"></el-input>
           </el-form-item>
-           <el-form-item label="配件单价" :label-width="formLabelWidth">
+          <el-form-item label="配件单价" :label-width="formLabelWidth">
             <el-input v-model="item.oneprice" autocomplete="off"></el-input>
           </el-form-item>
-           <el-form-item label="产品编号" :label-width="formLabelWidth">
+          <el-form-item label="产品编号" :label-width="formLabelWidth">
             <el-input v-model="item.prnum" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="分组" :label-width="formLabelWidth">
@@ -45,18 +72,15 @@
       </div>
     </el-dialog>
 
-    
-
     <el-table
       v-loading="listLoading"
       :data="tableList"
       element-loading-text="Loading"
-      size="small"
       border
       fit
-      stripe
+      highlight-current-row
     >
-      <el-table-column label="序号" type="index" width="100px" ></el-table-column>
+      <el-table-column label="序号" type="index" width="100px"></el-table-column>
       <el-table-column label="配件名称" prop="name"></el-table-column>
       <!-- <el-table-column label="配件数量" prop="num"></el-table-column> -->
       <el-table-column label="配件厂商" prop="vendor"></el-table-column>
@@ -95,10 +119,9 @@
         <el-form-item label="分组" label-width="100px">
           <el-input v-model="dataop.grop" autocomplete="off" style="width:280px;"></el-input>
         </el-form-item>
-         <el-form-item label="备注" label-width="100px">
+        <el-form-item label="备注" label-width="100px">
           <el-input v-model="dataop.bz" autocomplete="off" style="width:280px;"></el-input>
         </el-form-item>
-       
       </el-form>
       <div class="demo-drawer__footer close">
         <el-button @click="editData">确 定</el-button>
@@ -106,29 +129,29 @@
       </div>
     </el-drawer>
 
- <pagination
-            v-show="form.totalRow>0"
-            :total="form.totalRow"
-            :page.sync="form.pageNumber"
-            :limit.sync="form.pageSize"
-            @pagination="getList"
-          />
+    <pagination
+      v-show="form.totalRow>0"
+      :total="form.totalRow"
+      :page.sync="form.pageNumber"
+      :limit.sync="form.pageSize"
+      @pagination="getList"
+    />
   </div>
 </template>
 
 <script>
-import Pagination from '@/components/Pagination' // 分页
+import Pagination from "@/components/Pagination"; // 分页
 
 export default {
   components: {
-    Pagination
+    Pagination,
   },
   data() {
     return {
-      grop:{
-        data:[{}]
+      grop: {
+        data: [{}],
       },
-      query:'',
+      query: "",
       tableList: [],
       listLoading: false,
       dialogTableVisible: false,
@@ -137,20 +160,20 @@ export default {
       drawer: false,
       form: {
         data: [{}],
-        pageNumber:1,
-        pageSize:10,
-        totalRow:100
+        pageNumber: 1,
+        pageSize: 10,
+        totalRow: 100,
       },
       dataop: {
         name: "",
         num: "",
         id: "",
-        oneprice:'',
-        price:'',
-        prnum:'',
-        vendor:'',
-        grop:'',
-        bz:'',
+        oneprice: "",
+        price: "",
+        prnum: "",
+        vendor: "",
+        grop: "",
+        bz: "",
       },
       formLabelWidth: "120px",
     };
@@ -159,14 +182,14 @@ export default {
     this.getList();
   },
   methods: {
-    queryTable(){
-      console.log(this.query)
-      this.http.QueryPeijian({query:this.query}).then((res) => {
+    queryTable() {
+      console.log(this.query);
+      this.http.QueryPeijian({ query: this.query }).then((res) => {
         this.tableList = res.data;
         this.listLoading = false;
-        this.form.totalRow = res.total
+        this.form.totalRow = res.total;
       });
-      this.query = ''
+      this.query = "";
     },
     remove(id) {
       this.http.removePeiJian({ id }).then((res) => {
@@ -215,13 +238,13 @@ export default {
     getList() {
       this.listLoading = true;
       let info = {
-        pageNumber:this.form.pageNumber,
-        pageSize:this.form.pageSize
-      }
+        pageNumber: this.form.pageNumber,
+        pageSize: this.form.pageSize,
+      };
       this.http.QueryPeijian(info).then((res) => {
         this.tableList = res.data;
         this.listLoading = false;
-        this.form.totalRow = res.total
+        this.form.totalRow = res.total;
       });
     },
   },

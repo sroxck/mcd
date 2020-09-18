@@ -3,6 +3,7 @@
     <transition name="fade-transform" mode="out-in">
       <router-view :key="key" />
     </transition>
+    
   </section>
 </template>
 
@@ -20,6 +21,8 @@ export default {
 <style scoped>
 .app-main {
   /*50 = navbar  */
+  background: #f0f2f5;
+    padding: 20px;
   min-height: calc(100vh - 50px);
   width: 100%;
   position: relative;

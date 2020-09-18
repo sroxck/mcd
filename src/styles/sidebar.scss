@@ -40,6 +40,7 @@
     &.has-logo {
       .el-scrollbar {
         height: calc(100% - 50px);
+
       }
     }
 
@@ -71,6 +72,9 @@
     // menu hover
     .submenu-title-noDropdown,
     .el-submenu__title {
+      margin: 0 10px;
+      border-radius: 8px;
+
       &:hover {
         background-color: $menuHover !important;
       }
@@ -97,7 +101,7 @@
     }
 
     .main-container {
-      margin-left: 54px;
+      margin-left: 98px;
     }
 
     .submenu-title-noDropdown {
@@ -122,6 +126,7 @@
 
       &>.el-submenu__title {
         padding: 0 !important;
+        border-radius: 8px;
 
         .svg-icon {
           margin-left: 20px;
