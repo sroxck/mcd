@@ -38,7 +38,7 @@
       </el-row>
     </el-form>
     <!-- 新增的弹框 -->
-    <el-dialog title="新增记录" :visible.sync="dialogFormVisible" width="35%">
+    <el-dialog title="新增记录" :visible.sync="dialogFormVisible" width="700px">
       <el-form :model="form" :inline="true" label-position="left">
         <el-divider>基础信息</el-divider>
         <el-row>
@@ -378,6 +378,9 @@ export default {
 // .el-form-item {
 //   margin-bottom:0 !important;
 // }
+.el-divider--horizontal{
+  margin:10px 0 20px !important;
+}
 .el-dialog__body {
   padding: 0px 20px;
 }
