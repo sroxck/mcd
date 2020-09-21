@@ -38,7 +38,7 @@
       </el-row>
     </el-form>
     <!-- 新增的弹框 -->
-    <el-dialog title="新增记录" :visible.sync="dialogFormVisible" width="700px">
+    <el-dialog title="新增记录" :visible.sync="dialogFormVisible" width="900px">
       <el-form :model="form" :inline="true" label-position="left">
         <el-divider>基础信息</el-divider>
         <el-row>
@@ -75,9 +75,10 @@
             <el-input v-model="form.bz" autocomplete="off" style="width:120px;"></el-input>
           </el-form-item>
         </el-row>
-        <el-divider>配件</el-divider>
-        <el-row class="mb-3">
-          <el-button class="w-100 mb-3" @click="form.data.push({})" type="primary">增加一行</el-button>
+        <el-divider>配件信息</el-divider>
+        <el-row class="mb-2">
+          <el-button class=" mb-2" @click="form.data.push({})" type="primary" size="mini" round>增加一行</el-button>
+          <el-button class=" mb-2" @click="form.data.pop({})" type="danger" size="mini" round >删除一行</el-button>
           <div v-for="(item,index) in form.data" :key="index">
             <el-form-item label="配件名称" class="mr-3" label-width="70px">
               <el-select
@@ -98,9 +99,10 @@
             </el-form-item>
           </div>
         </el-row>
-        <el-divider>统计</el-divider>
+        <el-divider>统计信息</el-divider>
+          <el-button class="mb-2" @click="sunAdnsub" type="primary" size="mini" round>计算结果</el-button>
+
         <el-row>
-          <el-button class="w-100 mb-3" @click="sunAdnsub" type="primary">计算</el-button>
           <el-form-item label="配件合计" class="mr-3" label-width="70px">
             <el-input style="width:120px;" autocomplete="off" v-model.number="form.accessoriesSum"></el-input>
           </el-form-item>
@@ -379,7 +381,7 @@ export default {
 //   margin-bottom:0 !important;
 // }
 .el-divider--horizontal{
-  margin:10px 0 20px !important;
+  margin:5px 0 15px !important;
 }
 .el-dialog__body {
   padding: 0px 20px;
