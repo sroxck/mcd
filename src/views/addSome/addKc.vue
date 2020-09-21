@@ -120,6 +120,7 @@
       :page.sync="form.pageNumber"
       :limit.sync="form.pageSize"
       @pagination="getList"
+      :page-sizes="[5,10,15,20,30,50,100]"
     />
   </div>
 </template>
@@ -144,7 +145,7 @@ export default {
       form: { // 新增绑定的对象
         data: [{}], // 用于新增一组数据
         pageNumber: 1, // 分页查询需要的字段
-        pageSize: 20, // 分页查询需要的字段
+        pageSize: 15, // 分页查询需要的字段
         totalRow: 0, // 分页查询需要的字段
       },
       modifyData: { // 修改抽屉绑定的对象

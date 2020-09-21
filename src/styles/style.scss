@@ -229,3 +229,30 @@ $border-color:#d4d9de;
   -webkit-transition: .3s;
   transition: .3s;
 }
+
+// elementUI 全局设置
+.el-form-item__label{
+  font-size: 12px !important;
+}
+.el-divider--horizontal{
+ margin:5px 0 15px !important;
+}
+.el-dialog__body {
+ padding: 0px 20px;
+}
+.el-table--border th{
+ height: 40px;
+ background-color: #F2F6F8;
+}
+.el-table {
+  border-radius: 10px 10px 0px 0px !important;
+}
+.el-divider__text.is-center {
+  background: rgb(242, 246, 253);
+    border-radius: 10px 10px 0 0;
+    font-size: 12px;
+    transform: translateX(-50%) translateY(-100%);
+}
+.el-dialog {
+  border-radius: 6px;
+}

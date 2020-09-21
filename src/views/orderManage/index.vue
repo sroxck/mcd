@@ -32,13 +32,33 @@
               end-placeholder="结束日期"
             ></el-date-picker>
           </el-form-item>
+             <el-form-item label-width="70px" style="margin-right:20px;" >
+            <el-dropdown class="columnStyle" size="small">
+               <el-button>
+                    选择列
+                    <i class="el-icon-arrow-down el-icon--right" />
+                </el-button>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item>
+                <el-checkbox v-model="showShuoMing" size="small" class="columnCheckbox">维修说明</el-checkbox>
+              </el-dropdown-item>
+              <el-dropdown-item>
+                <el-checkbox v-model="showBianHao" size="small" class="columnCheckbox">餐厅编号</el-checkbox>
+              </el-dropdown-item>
+              <el-dropdown-item>
+                <el-checkbox v-model="showTime" size="small" class="columnCheckbox">日期</el-checkbox>
+              </el-dropdown-item>
+            </el-dropdown-menu>
+            </el-dropdown>
+          </el-form-item>
           <el-button style @click="dialogFormVisible = true">新增</el-button>
           <el-button style @click="getList()">重置</el-button>
         </el-col>
       </el-row>
     </el-form>
+
     <!-- 新增的弹框 -->
-    <el-dialog title="新增记录" :visible.sync="dialogFormVisible" width="900px">
+    <el-dialog title="新增记录" :visible.sync="dialogFormVisible" width="800px">
       <el-form :model="form" :inline="true" label-position="left">
         <el-divider>基础信息</el-divider>
         <el-row>
@@ -46,45 +66,45 @@
              <el-date-picker
               v-model="form.time"
               type="date"
-               style="width:120px;"
+               style="width:140px; margin-right:15px;"
               placeholder="选择日期">
             </el-date-picker>
           </el-form-item>
           <el-form-item label="餐厅编号" class="mr-3" label-width="70px">
-            <el-input v-model="form.diningNum" autocomplete="off" style="width:120px;"></el-input>
+            <el-input v-model="form.diningNum" autocomplete="off" style="width:140px; margin-right:15px;"></el-input>
           </el-form-item>
           <el-form-item label="餐厅名称" class="mr-3" label-width="70px">
-            <el-input v-model="form.diningName" autocomplete="off" style="width:120px;"></el-input>
+            <el-input v-model="form.diningName" autocomplete="off" style="width:140px; margin-right:15px;"></el-input>
           </el-form-item>
           <el-form-item label="EPS号" class="mr-3" label-width="70px">
-            <el-input v-model="form.eps" autocomplete="off" style="width:120px;"></el-input>
+            <el-input v-model="form.eps" autocomplete="off" style="width:140px; margin-right:15px;"></el-input>
           </el-form-item>
           <el-form-item label="次数" class="mr-3" label-width="70px">
-            <el-input v-model="form.number" autocomplete="off" style="width:120px;"></el-input>
+            <el-input v-model="form.number" autocomplete="off" style="width:140px; margin-right:15px;"></el-input>
           </el-form-item>
           <el-form-item label="维修单号" class="mr-3" label-width="70px">
-            <el-input v-model="form.fixOrder" autocomplete="off" style="width:120px;"></el-input>
+            <el-input v-model="form.fixOrder" autocomplete="off" style="width:140px; margin-right:15px;"></el-input>
           </el-form-item>
           <el-form-item label="维修人员" class="mr-3" label-width="70px">
-            <el-input v-model="form.fixPeople" autocomplete="off" style="width:120px;"></el-input>
+            <el-input v-model="form.fixPeople" autocomplete="off" style="width:140px; margin-right:15px;"></el-input>
           </el-form-item>
           <el-form-item label="人数" class="mr-3" label-width="70px">
-            <el-input v-model="form.peopleCount" autocomplete="off" style="width:120px;"></el-input>
+            <el-input v-model="form.peopleCount" autocomplete="off" style="width:140px; margin-right:15px;"></el-input>
           </el-form-item>
           <el-form-item label="维修说明" class="mr-3" label-width="70px">
-            <el-input v-model="form.bz" autocomplete="off" style="width:120px;"></el-input>
+            <el-input v-model="form.bz" autocomplete="off" style="width:140px; margin-right:15px;"></el-input>
           </el-form-item>
         </el-row>
+
         <el-divider>配件信息</el-divider>
         <el-row class="mb-2">
-          <el-button class=" mb-2" @click="form.data.push({})" type="primary" size="mini" round>增加一行</el-button>
-          <el-button class=" mb-2" @click="form.data.pop({})" type="danger" size="mini" round >删除一行</el-button>
+          <el-button class="el-icon-plus  mb-2" @click="form.data.push({})" type="primary"  circle></el-button>
           <div v-for="(item,index) in form.data" :key="index">
             <el-form-item label="配件名称" class="mr-3" label-width="70px">
               <el-select
                 v-model="item.accessories"
                 filterable
-                style="width:120px;"
+                style="width:140px; margin-right:15px;"
                 placeholder="请选择"
                 @change="accessoriesChange(index,item)"
               >
@@ -92,42 +112,44 @@
               </el-select>
             </el-form-item>
             <el-form-item label="配件数量" class="mr-3" label-width="70px">
-              <el-input style="width:120px;" autocomplete="off" v-model.number="item.accessoriesShuLiang"></el-input>
+              <el-input style="width:140px; margin-right:15px;" autocomplete="off" v-model.number="item.accessoriesShuLiang"></el-input>
             </el-form-item>
             <el-form-item label="配件价格" class="mr-3" label-width="70px">
-              <el-input style="width:120px;" autocomplete="off" v-model.number="item.price"></el-input>
+              <el-input style="width:140px; margin-right:15px;" autocomplete="off" v-model.number="item.price"></el-input>
             </el-form-item>
+              <el-button class="el-icon-delete  mb-2" @click="form.data.splice(index,1)" type="danger"  circle></el-button>
           </div>
         </el-row>
+
         <el-divider>统计信息</el-divider>
           <el-button class="mb-2" @click="sunAdnsub" type="primary" size="mini" round>计算结果</el-button>
-
-        <el-row>
-          <el-form-item label="配件合计" class="mr-3" label-width="70px">
-            <el-input style="width:120px;" autocomplete="off" v-model.number="form.accessoriesSum"></el-input>
-          </el-form-item>
-          <el-form-item label="人均配件" class="mr-3" label-width="70px">
-            <el-input style="width:120px;" autocomplete="off" v-model="form.average"></el-input>
-          </el-form-item>
-          <el-form-item label="人工费" class="mr-3" label-width="70px">
-            <el-input style="width:120px;" autocomplete="off" v-model.number="form.artificial"></el-input>
-          </el-form-item>
-          <el-form-item label="人均人工" class="mr-3" label-width="70px">
-            <el-input style="width:120px;" autocomplete="off" v-model.number="form.averagePrice"></el-input>
-          </el-form-item>
-          <el-form-item label="车费" class="mr-3" label-width="70px">
-            <el-input style="width:120px;" autocomplete="off" v-model.number="form.fare"></el-input>
-          </el-form-item>
-          <el-form-item label="总计" class="mr-3" label-width="70px">
-            <el-input style="width:120px;" autocomplete="off" v-model.number="form.sumTotal"></el-input>
-          </el-form-item>
-        </el-row>
+          <el-row>
+            <el-form-item label="配件合计" class="mr-3" label-width="70px">
+              <el-input style="width:140px; margin-right:15px;" autocomplete="off" v-model.number="form.accessoriesSum"></el-input>
+            </el-form-item>
+            <el-form-item label="人均配件" class="mr-3" label-width="70px">
+              <el-input style="width:140px; margin-right:15px;" autocomplete="off" v-model="form.average"></el-input>
+            </el-form-item>
+            <el-form-item label="人工费" class="mr-3" label-width="70px">
+              <el-input style="width:140px; margin-right:15px;" autocomplete="off" v-model.number="form.artificial"></el-input>
+            </el-form-item>
+            <el-form-item label="人均人工" class="mr-3" label-width="70px">
+              <el-input style="width:140px; margin-right:15px;" autocomplete="off" v-model.number="form.averagePrice"></el-input>
+            </el-form-item>
+            <el-form-item label="车费" class="mr-3" label-width="70px">
+              <el-input style="width:140px; margin-right:15px;" autocomplete="off" v-model.number="form.fare"></el-input>
+            </el-form-item>
+            <el-form-item label="总计" class="mr-3" label-width="70px">
+              <el-input style="width:140px; margin-right:15px;" autocomplete="off" v-model.number="form.sumTotal"></el-input>
+            </el-form-item>
+          </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
         <el-button type="primary" @click="addItem">确 定</el-button>
       </div>
     </el-dialog>
+
     <!-- 展示的表格 -->
     <el-table
       v-loading="listLoading"
@@ -135,16 +157,17 @@
       element-loading-text="Loading"
       border
       fit
+      stripe
       highlight-current-row
     >
-      <el-table-column label="日期" prop="time"></el-table-column>
-      <el-table-column label="餐厅编号" prop="diningNum"></el-table-column>
+      <el-table-column label="日期" prop="time" v-if="showTime"></el-table-column>
+      <el-table-column label="餐厅编号" prop="diningNum" v-if="showBianHao"></el-table-column>
       <el-table-column label="餐厅名称" prop="diningName"></el-table-column>
       <el-table-column label="EPS号" prop="eps"></el-table-column>
       <el-table-column label="维修单号" prop="fixOrder"></el-table-column>
       <el-table-column label="维修人员" prop="fixPeople"></el-table-column>
       <el-table-column label="人数" prop="peopleCount"></el-table-column>
-      <el-table-column label="维修说明" prop="bz"></el-table-column>
+      <el-table-column label="维修说明" prop="bz" v-if="showShuoMing"></el-table-column>
       <el-table-column label="配件合计" prop="accessoriesSum"></el-table-column>
       <el-table-column label="人工" prop="artificial"></el-table-column>
       <el-table-column label="车费" prop="fare"></el-table-column>
@@ -156,32 +179,33 @@
         </template>
       </el-table-column>
     </el-table>
+
     <!-- 修改的抽屉 -->
     <el-drawer title="编辑配件信息" :visible.sync="drawer" :with-header="false" class="tk">
       <el-form :model="dataop" :inline="true" label-position="left" style="margin-top:50px;">
         <el-form-item label="配件名称" label-width="100px">
-          <el-input v-model="dataop.name" autocomplete="off" style="width:120px;"></el-input>
+          <el-input v-model="dataop.name" autocomplete="off" style="width:140px;"></el-input>
         </el-form-item>
         <el-form-item label="配件数量" label-width="100px">
-          <el-input v-model="dataop.num" autocomplete="off" style="width:120px;"></el-input>
+          <el-input v-model="dataop.num" autocomplete="off" style="width:140px;"></el-input>
         </el-form-item>
         <el-form-item label="配件厂商" label-width="100px">
-          <el-input v-model="dataop.vendor" autocomplete="off" style="width:120px;"></el-input>
+          <el-input v-model="dataop.vendor" autocomplete="off" style="width:140px;"></el-input>
         </el-form-item>
         <el-form-item label="配件编号" label-width="100px">
-          <el-input v-model="dataop.prnum" autocomplete="off" style="width:120px;"></el-input>
+          <el-input v-model="dataop.prnum" autocomplete="off" style="width:140px;"></el-input>
         </el-form-item>
         <el-form-item label="配件进价" label-width="100px">
-          <el-input v-model="dataop.price" autocomplete="off" style="width:120px;"></el-input>
+          <el-input v-model="dataop.price" autocomplete="off" style="width:140px;"></el-input>
         </el-form-item>
         <el-form-item label="配件单价" label-width="100px">
-          <el-input v-model="dataop.oneprice" autocomplete="off" style="width:120px;"></el-input>
+          <el-input v-model="dataop.oneprice" autocomplete="off" style="width:140px;"></el-input>
         </el-form-item>
         <el-form-item label="分组" label-width="100px">
-          <el-input v-model="dataop.grop" autocomplete="off" style="width:120px;"></el-input>
+          <el-input v-model="dataop.grop" autocomplete="off" style="width:140px;"></el-input>
         </el-form-item>
         <el-form-item label="备注" label-width="100px">
-          <el-input v-model="dataop.bz" autocomplete="off" style="width:120px;"></el-input>
+          <el-input v-model="dataop.bz" autocomplete="off" style="width:140px;"></el-input>
         </el-form-item>
       </el-form>
       <div class="demo-drawer__footer close">
@@ -215,15 +239,12 @@ export default {
       listLoading: false,
       dialogFormVisible: false,
       drawer: false,
+      showShuoMing:false,
+      showBianHao:false,
+      showTime:false,
       accessories: [], // 配件名称列表
       form: {
-        data: [
-          {
-            // accessories:'', // 配件名称
-            //  accessoriesShuLiang:'', // 配件数量
-            //  price:'', // 配件价格
-          },
-        ],
+        data: [{},],
         time: "",             // 时间
         diningNum: "",        // 餐厅编号
         diningName: "",       // 餐厅名称
@@ -377,13 +398,5 @@ export default {
   left: 50%;
   transform: translateX(-50%);
 }
-// .el-form-item {
-//   margin-bottom:0 !important;
-// }
-.el-divider--horizontal{
-  margin:5px 0 15px !important;
-}
-.el-dialog__body {
-  padding: 0px 20px;
-}
+
 </style>
