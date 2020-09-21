@@ -76,14 +76,13 @@
       </el-table-column>
     </el-table>
     <!-- 编辑的抽屉 绑定 modifyData对象-->
-    <el-drawer
+    <el-dialog
       title="编辑配件信息"
       :visible.sync="drawer"
       :before-close="handleClose"
-      :with-header="false"
       class="tk"
     >
-      <el-form :model="modifyData" style="margin-top:50px;">
+      <el-form :model="modifyData" :inline="true" label-position="left" >
         <el-form-item label="配件名称" label-width="100px">
           <el-input v-model="modifyData.name" autocomplete="off" style="width:280px;"></el-input>
         </el-form-item>
@@ -109,11 +108,11 @@
           <el-input v-model="modifyData.bz" autocomplete="off" style="width:280px;"></el-input>
         </el-form-item>
       </el-form>
-      <div class="demo-drawer__footer close">
+       <div slot="footer" class="dialog-footer">
         <el-button @click="editData">确 定</el-button>
         <el-button @click="drawer = false">取 消</el-button>
       </div>
-    </el-drawer>
+    </el-dialog>
     <!-- 分页组件 -->
     <pagination
       v-show="form.totalRow>0"
@@ -260,7 +259,7 @@ export default {
 <style lang="scss">
 .close {
   position: absolute;
-  bottom: 20px;
+  bottom: 0;
   left: 50%;
   transform: translateX(-50%);
 }

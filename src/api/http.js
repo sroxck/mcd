@@ -22,8 +22,14 @@ export default {
   addPeijian(params) {
     return this.post('/addPeijian',params)
   },
+  addOrder(params) {
+    return this.post('/addOrder',params)
+  },
   QueryPeijian(params) {
     return this.post('/QueryPeijian',params)
+  },
+  QueryOrder(params) {
+    return this.post('/QueryOrder',params)
   },
   modifyPeiJian(params) {
     return this.post('/modifyPeiJian',params)

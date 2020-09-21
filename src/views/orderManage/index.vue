@@ -41,7 +41,7 @@
     <el-dialog title="新增记录" :visible.sync="dialogFormVisible" width="70%">
       <el-form :model="form" :inline="true" label-position="left">
         <el-divider>基础信息</el-divider>
-        <el-row >
+        <el-row>
           <el-form-item label="日期" class="mr-3" label-width="70px">
             <el-input v-model="form.time" autocomplete="off"></el-input>
           </el-form-item>
@@ -72,46 +72,46 @@
         </el-row>
         <el-divider>配件</el-divider>
         <el-row class="mb-3">
-          <el-button class="w-100 mb-3" @click="form.data.push({})">增加一行</el-button>
+          <el-button class="w-100 mb-3" @click="form.data.push({})" type="primary">增加一行</el-button>
           <div v-for="(item,index) in form.data" :key="index">
             <el-form-item label="配件名称" class="mr-3" label-width="70px">
-             <el-select v-model="item.accessories" filterable placeholder="请选择">
-              <el-option
-                v-for="k in accessories"
-                :key="k._id"
-                :label="k.name"
-                :value="k.name">
-              </el-option>
-            </el-select>
+              <el-select
+                v-model="item.accessories"
+                filterable
+                placeholder="请选择"
+                @change="accessoriesChange(index,item)"
+              >
+                <el-option v-for="k in accessories" :key="k._id" :label="k.name" :value="k.name"></el-option>
+              </el-select>
             </el-form-item>
-
             <el-form-item label="配件数量" class="mr-3" label-width="70px">
-              <el-input autocomplete="off" v-model="item.bz"></el-input>
+              <el-input autocomplete="off" v-model.number="item.accessoriesShuLiang"></el-input>
             </el-form-item>
             <el-form-item label="配件价格" class="mr-3" label-width="70px">
-              <el-input autocomplete="off" v-model="item.bz"></el-input>
+              <el-input autocomplete="off" v-model.number="item.price"></el-input>
             </el-form-item>
           </div>
         </el-row>
         <el-divider>统计</el-divider>
         <el-row>
+          <el-button class="w-100 mb-3" @click="sunAdnsub" type="primary">计算</el-button>
           <el-form-item label="配件合计" class="mr-3" label-width="70px">
-            <el-input autocomplete="off"></el-input>
+            <el-input autocomplete="off" v-model.number="form.accessoriesSum"></el-input>
           </el-form-item>
           <el-form-item label="人均配件" class="mr-3" label-width="70px">
-            <el-input autocomplete="off"></el-input>
+            <el-input autocomplete="off" v-model="form.average"></el-input>
           </el-form-item>
           <el-form-item label="人工费" class="mr-3" label-width="70px">
-            <el-input autocomplete="off"></el-input>
+            <el-input autocomplete="off" v-model.number="form.artificial"></el-input>
           </el-form-item>
           <el-form-item label="人均人工" class="mr-3" label-width="70px">
-            <el-input autocomplete="off"></el-input>
+            <el-input autocomplete="off" v-model.number="form.averagePrice"></el-input>
           </el-form-item>
           <el-form-item label="车费" class="mr-3" label-width="70px">
-            <el-input autocomplete="off"></el-input>
+            <el-input autocomplete="off" v-model.number="form.fare"></el-input>
           </el-form-item>
           <el-form-item label="总计" class="mr-3" label-width="70px">
-            <el-input autocomplete="off"></el-input>
+            <el-input autocomplete="off" v-model.number="form.sumTotal"></el-input>
           </el-form-item>
         </el-row>
       </el-form>
@@ -129,18 +129,18 @@
       fit
       highlight-current-row
     >
-      <el-table-column label="日期" prop="name"></el-table-column>
-      <el-table-column label="餐厅编号" prop="vendor"></el-table-column>
-      <el-table-column label="餐厅名称" prop="prnum"></el-table-column>
-      <el-table-column label="EPS号" prop="price"></el-table-column>
-      <el-table-column label="维修单号" prop="oneprice"></el-table-column>
-      <el-table-column label="维修人员" prop="bz"></el-table-column>
-      <el-table-column label="人数" prop="bz"></el-table-column>
+      <el-table-column label="日期" prop="time"></el-table-column>
+      <el-table-column label="餐厅编号" prop="diningNum"></el-table-column>
+      <el-table-column label="餐厅名称" prop="diningName"></el-table-column>
+      <el-table-column label="EPS号" prop="eps"></el-table-column>
+      <el-table-column label="维修单号" prop="fixOrder"></el-table-column>
+      <el-table-column label="维修人员" prop="fixPeople"></el-table-column>
+      <el-table-column label="人数" prop="peopleCount"></el-table-column>
       <el-table-column label="维修说明" prop="bz"></el-table-column>
-      <el-table-column label="配件合计" prop="bz"></el-table-column>
-      <el-table-column label="人工" prop="bz"></el-table-column>
-      <el-table-column label="车费" prop="bz"></el-table-column>
-      <el-table-column label="配件总计" prop="bz"></el-table-column>
+      <el-table-column label="配件合计" prop="accessoriesSum"></el-table-column>
+      <el-table-column label="人工" prop="artificial"></el-table-column>
+      <el-table-column label="车费" prop="fare"></el-table-column>
+      <el-table-column label="总计" prop="sumTotal"></el-table-column>
       <el-table-column fixed="right" label="操作" width="100">
         <template slot-scope="scope">
           <el-button type="text" @click="edit(scope.row)">编辑</el-button>
@@ -201,18 +201,38 @@ export default {
   },
   data() {
     return {
-      queryInfo:{},
+      queryInfo: {},
       query: "",
       tableList: [],
       listLoading: false,
       dialogFormVisible: false,
       drawer: false,
-      accessories:[], // 配件名称列表
+      accessories: [], // 配件名称列表
       form: {
-        data: [{}],
+        data: [
+          {
+            // accessories:'', // 配件名称
+            //  accessoriesShuLiang:'', // 配件数量
+            //  price:'', // 配件价格
+          },
+        ],
+        time: "",             // 时间
+        diningNum: "",        // 餐厅编号
+        diningName: "",       // 餐厅名称
+        eps: "",              // eps 号
+        number: "",           // 次数
+        fixOrder: "",         // 维修单号
+        fixPeople: "",        // 维修人员
+        peopleCount: "",      // 人数
+        accessoriesSum: "",   //  配件合计
+        average: "",          //  人均配件
+        artificial: "100",    //  人工费
+        fare: "40",           //   车费
         pageNumber: 1,
         pageSize: 10,
         totalRow: 100,
+        sumTotal: "",          // 总计
+        averagePrice: "",      //   人均人工
       },
       dataop: {
         name: "",
@@ -230,18 +250,52 @@ export default {
   },
   created() {
     this.getList();
-    this.getAccessories() //获取配件名称列表
+    this.getAccessories(); //获取配件名称列表
   },
   methods: {
-    getAccessories(){
+    sunAdnsub() {
+      this.form.sumTotal =
+        Number(this.form.accessoriesSum) +
+        Number(this.form.artificial) +
+        Number(this.form.fare);
+
+      let sum = 0;
+      this.form.data.forEach((k) => {
+        console.log(k.accessoriesShuLiang, "accessoriesShuLiang");
+        sum += Number(k.accessoriesShuLiang);
+      });
+      this.$set(this.form, "average", sum / Number(this.form.peopleCount));
+
+      this.form.averagePrice = this.form.artificial / this.form.peopleCount;
+    },
+
+    getAccessories() {
+      // 查询所有配件名称
       this.http.QueryPeijian({}).then((res) => {
-        console.log(res,'333')
-        this.accessories = res.data
+        this.accessories = res.data;
       });
     },
+    accessoriesChange(index, item, k) {
+      //自动带入配件单价,合计价格
+      let info = [];
+      this.$set(this.form.data, index, info[0]);
+      this.accessories.forEach((i) => {
+        if (i.name == item.accessories) {
+          info.push({ price: i.price, accessories: item.accessories });
+        }
+      });
+      this.$set(this.form.data, index, info[0]);
+      this.form.accessoriesSum = 0;
+      this.form.data.forEach((k) => {
+        if (k.price != undefined && k.price != null) {
+          this.form.accessoriesSum += Number(k.price);
+        }
+      });
+    },
+
     queryTable() {
       console.log(this.query);
-      this.http.QueryPeijian({ query: this.query }).then((res) => {
+      this.http.QueryOrder({ query: this.query }).then((res) => {
         this.tableList = res.data;
         this.listLoading = false;
         this.form.totalRow = res.total;
@@ -281,7 +335,7 @@ export default {
     },
     addItem() {
       this.dialogFormVisible = false;
-      this.http.addPeijian(this.form).then((res) => {
+      this.http.addOrder(this.form).then((res) => {
         console.log(res, "22");
         if (res.code == 200) {
           this.getList();
@@ -291,6 +345,7 @@ export default {
           this.$notify.success("新增失败,请联系管理员");
         }
       });
+      console.log(this.form, "pp4");
     },
     getList() {
       this.listLoading = true;
@@ -298,7 +353,7 @@ export default {
         pageNumber: this.form.pageNumber,
         pageSize: this.form.pageSize,
       };
-      this.http.QueryPeijian(info).then((res) => {
+      this.http.QueryOrder(info).then((res) => {
         this.tableList = res.data;
         this.listLoading = false;
         this.form.totalRow = res.total;
