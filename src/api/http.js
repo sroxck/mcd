@@ -31,6 +31,9 @@ export default {
   removePeiJian(params) {
     return this.post('/removePeiJian',params)
   },
+  getAccessories(params) {
+    return this.post('/getAccessories',params)
+  },
   los(params){
     return this.post('add', params)
   },
