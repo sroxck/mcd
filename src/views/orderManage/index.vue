@@ -391,6 +391,26 @@ export default {
           this.getList();
           this.$notify.success("修改成功");
           this.dialogFormVisible = false;
+           this.form.data = {
+            data: [{},],
+            time: "",             // 时间
+            diningNum: "",        // 餐厅编号
+            diningName: "",       // 餐厅名称
+            eps: "",              // eps 号
+            number: "",           // 次数
+            fixOrder: "",         // 维修单号
+            fixPeople: [],        // 维修人员
+            peopleCount: "",      // 人数
+            accessoriesSum: "",   //  配件合计
+            average: "",          //  人均配件
+            artificial: "100",    //  人工费
+            fare: "40",           //   车费
+            pageNumber: 1,
+            pageSize: 15,
+            totalRow: 100,
+            sumTotal: "",          // 总计
+            averagePrice: "",      //   人均人工
+          }
         }
       });
     },
@@ -411,6 +431,26 @@ export default {
           this.getList();
           this.$notify.success("新增成功");
           this.form.data = [{}];
+          this.form.data = {
+            data: [{},],
+            time: "",             // 时间
+            diningNum: "",        // 餐厅编号
+            diningName: "",       // 餐厅名称
+            eps: "",              // eps 号
+            number: "",           // 次数
+            fixOrder: "",         // 维修单号
+            fixPeople: [],        // 维修人员
+            peopleCount: "",      // 人数
+            accessoriesSum: "",   //  配件合计
+            average: "",          //  人均配件
+            artificial: "100",    //  人工费
+            fare: "40",           //   车费
+            pageNumber: 1,
+            pageSize: 15,
+            totalRow: 100,
+            sumTotal: "",          // 总计
+            averagePrice: "",      //   人均人工
+          }
         } else {
           this.$notify.success("新增失败,请联系管理员");
         }
