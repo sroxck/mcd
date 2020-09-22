@@ -282,18 +282,12 @@ export default {
     this.getAccessories(); //获取配件名称列表
   },
   methods: {
-    peijianSum(item,index) { // 配件数量离开鼠标事件
-    let sum = 0;
-    console.log(item,'item');
-      this.$set(this.form.data[index], 'price',Number(localStorage.getItem(`${item.accessories}`)) );
-      sum = this.form.data[index].accessoriesShuLiang *this.form.data[index].price
-      this.$set(this.form.data[index], 'price', sum);
+    peijianSum(item,index) { // 配件数量输入框,失去焦点计算当前行的总价
+      this.$set(this.form.data[index], 'price',Number(localStorage.getItem(`${item.accessories}`)) ); // 先恢复数量 1 的单价
+      let sum = this.form.data[index].accessoriesShuLiang *this.form.data[index].price // 计算输入的数量 *单价 得到总价
+      this.$set(this.form.data[index], 'price', sum); // 设置总价
     },
-    sunAdnsub() {
-      this.form.sumTotal =
-        Number(this.form.accessoriesSum) +
-        Number(this.form.artificial) +
-        Number(this.form.fare);
+    sunAdnsub() { // 点击计算结果按钮 进行计算
 
       let sum = 0;
       let priceSum = 0;
@@ -302,10 +296,12 @@ export default {
         priceSum+= Number(k.price);
         sum += Number(k.accessoriesShuLiang);
       });
-      this.form.accessoriesSum = priceSum
-      this.$set(this.form, "average", sum / Number(this.form.peopleCount));
+      this.form.accessoriesSum = priceSum // 配件合计金额
+      this.$set(this.form, "average", sum / Number(this.form.peopleCount)); // 人均配件
 
-      this.form.averagePrice = this.form.artificial / this.form.peopleCount;
+      this.form.averagePrice = this.form.artificial / this.form.peopleCount; // 人均人工
+      this.form.sumTotal = Number(this.form.accessoriesSum) + Number(this.form.artificial) + Number(this.form.fare); // 总计
+
     },
 
     getAccessories() {
