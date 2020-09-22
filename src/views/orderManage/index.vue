@@ -270,11 +270,11 @@ export default {
         peopleCount: "",      // 人数
         accessoriesSum: "",   //  配件合计
         average: "",          //  人均配件
-        artificial: "100",    //  人工费
-        fare: "40",           //   车费
+        artificial: Number("100").toFixed(2),    //  人工费
+        fare: Number("40").toFixed(2),           //   车费
         pageNumber: 1,
-        pageSize: 15,
-        totalRow: 100,
+        pageSize: 15.00,
+        totalRow: 100.00,
         sumTotal: "",          // 总计
         averagePrice: "",      //   人均人工
       },
@@ -339,11 +339,11 @@ export default {
         priceSum+= Number(k.price);
         sum += Number(k.accessoriesShuLiang);
       });
-      this.form.accessoriesSum = priceSum // 配件合计金额
+      this.form.accessoriesSum = Number(priceSum).toFixed(2) // 配件合计金额
       this.$set(this.form, "average", (priceSum / Number(this.form.peopleCount)).toFixed(2) ); // 人均配件
 
       this.form.averagePrice = (this.form.artificial / this.form.peopleCount).toFixed(2); // 人均人工
-      this.form.sumTotal = Number(this.form.accessoriesSum) + Number(this.form.artificial) + Number(this.form.fare); // 总计
+      this.form.sumTotal = (Number(this.form.accessoriesSum) + Number(this.form.artificial) + Number(this.form.fare)).toFixed(2); // 总计
 
     },
 
@@ -360,7 +360,7 @@ export default {
       this.accessories.forEach((i,index) => {
         if (i.name == item.accessories) {
           console.log(i,item,'0909')
-          info.push({ price: i.oneprice, accessories: item.accessories ,accessoriesShuLiang:1});
+          info.push({ price: Number(i.oneprice).toFixed(2), accessories: item.accessories ,accessoriesShuLiang:1});
           localStorage.setItem(`${item.accessories}`,i.price)
         }
       });
