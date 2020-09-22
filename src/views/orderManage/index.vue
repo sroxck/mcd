@@ -158,7 +158,7 @@
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
         <el-button type="primary" @click="addItem()" v-if="modifyButton">确 定</el-button>
-        <el-button type="primary" @click="editData()">确 定</el-button>
+        <el-button type="primary" @click="editData()" v-else>确 定</el-button>
       </div>
     </el-dialog>
 
