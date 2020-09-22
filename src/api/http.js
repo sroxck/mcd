@@ -43,6 +43,9 @@ export default {
   QueryHotel(params) {
     return this.post('/QueryHotel',params)
   },
+  QueryfixPeople(params) {
+    return this.post('/QueryfixPeople',params)
+  },
   modifyHotel(params) {
     return this.post('/modifyHotel',params)
   },

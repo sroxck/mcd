@@ -76,7 +76,7 @@
             <el-input v-model="form.diningNum" autocomplete="off" style="width:140px; margin-right:15px;"></el-input>
           </el-form-item>
           <el-form-item label="餐厅名称" class="mr-3" label-width="70px">
-            <el-select v-model="queryInfo.diningName" style="width:140px; margin-right:15px;">
+            <el-select v-model="form.diningName" style="width:140px; margin-right:15px;">
               <el-option v-for="(item,index) in hotelNameList" :key="index" :label="item.hotelName" :value="item.hotelName" ></el-option>
             </el-select>
             <!-- <el-input v-model="form.diningName" autocomplete="off" style="width:140px; margin-right:15px;"></el-input> -->
@@ -91,7 +91,10 @@
             <el-input v-model="form.fixOrder" autocomplete="off" style="width:140px; margin-right:15px;"></el-input>
           </el-form-item>
           <el-form-item label="维修人员" class="mr-3" label-width="70px">
-            <el-input v-model="form.fixPeople" autocomplete="off" style="width:140px; margin-right:15px;"></el-input>
+            <el-select v-model="form.fixPeople" style="width:140px; margin-right:15px;">
+              <el-option v-for="(item,index) in fixPeopleList" :key="index" :label="item.name" :value="item.name" ></el-option>
+            </el-select>
+            <!-- <el-input v-model="form.fixPeople" autocomplete="off" style="width:140px; margin-right:15px;"></el-input> -->
           </el-form-item>
           <el-form-item label="人数" class="mr-3" label-width="70px">
             <el-input v-model="form.peopleCount" autocomplete="off" style="width:140px; margin-right:15px;"></el-input>
@@ -244,6 +247,7 @@ export default {
       queryInfo: {},
       query: "",
       tableList: [],
+      fixPeopleList:[],
       listLoading: false,
       dialogFormVisible: false,
       drawer: false,
@@ -295,6 +299,9 @@ export default {
     gethotelNameList(){
       this.http.QueryHotel({}).then(res=>{
         this.hotelNameList = res.data
+      })
+      this.http.QueryfixPeople({}).then(res=>{
+        this.fixPeopleList = res.data
       })
     },
     handleClose() {
