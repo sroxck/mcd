@@ -37,6 +37,18 @@ export default {
   removePeiJian(params) {
     return this.post('/removePeiJian',params)
   },
+  addHotel(params) {
+    return this.post('/addHotel',params)
+  },
+  QueryHotel(params) {
+    return this.post('/QueryHotel',params)
+  },
+  modifyHotel(params) {
+    return this.post('/modifyHotel',params)
+  },
+  removeHotel(params) {
+    return this.post('/removeHotel',params)
+  },
   getAccessories(params) {
     return this.post('/getAccessories',params)
   },

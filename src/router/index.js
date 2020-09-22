@@ -86,6 +86,20 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/hotel',
+    component: Layout,
+    redirect: '/hotel/index',
+    meta: { title: '餐厅管理', icon: 'el-icon-s-help' },
+    children: [
+      {
+        path: 'hotel',
+        name: 'hotel',
+        component: () => import('@/views/hotel/index'),
+        meta: { title: '餐厅管理', icon: 'table' }
+      },
+    ]
+  },
+  {
     path: '/orderManage',
     component: Layout,
     redirect: '/orderManage/manage',

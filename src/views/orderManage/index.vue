@@ -11,6 +11,7 @@
             <el-input placeholder="请输入餐厅编号" style="width:180px;" v-model="queryInfo.diningNum"></el-input>
           </el-form-item>
           <el-form-item label="餐厅名称" label-width="70px" style="margin-right:20px;">
+            
             <el-input placeholder="请输入餐厅名称" style="width:180px;" v-model="queryInfo.diningName"></el-input>
           </el-form-item>
           <el-form-item label="维修人员" label-width="70px" style="margin-right:20px;">
@@ -58,7 +59,7 @@
     </el-form>
 
     <!-- 新增的弹框 -->
-    <el-dialog title="新增记录" :visible.sync="dialogFormVisible" width="800px">
+    <el-dialog title="新增记录" :visible.sync="dialogFormVisible" :before-close="handleClose" width="800px" >
       <el-form :model="form" :inline="true" label-position="left">
         <el-divider>基础信息</el-divider>
         <el-row>
@@ -66,6 +67,7 @@
              <el-date-picker
               v-model="form.time"
               type="date"
+              format="yyyy - MM - dd"
                style="width:140px; margin-right:15px;"
               placeholder="选择日期">
             </el-date-picker>
@@ -74,7 +76,10 @@
             <el-input v-model="form.diningNum" autocomplete="off" style="width:140px; margin-right:15px;"></el-input>
           </el-form-item>
           <el-form-item label="餐厅名称" class="mr-3" label-width="70px">
-            <el-input v-model="form.diningName" autocomplete="off" style="width:140px; margin-right:15px;"></el-input>
+            <el-select v-model="queryInfo.diningName" style="width:140px; margin-right:15px;">
+              <el-option v-for="(item,index) in hotelNameList" :key="index" :label="item.hotelName" :value="item.hotelName" ></el-option>
+            </el-select>
+            <!-- <el-input v-model="form.diningName" autocomplete="off" style="width:140px; margin-right:15px;"></el-input> -->
           </el-form-item>
           <el-form-item label="EPS号" class="mr-3" label-width="70px">
             <el-input v-model="form.eps" autocomplete="off" style="width:140px; margin-right:15px;"></el-input>
@@ -127,21 +132,24 @@
             <el-form-item label="配件合计" class="mr-3" label-width="70px">
               <el-input style="width:140px; margin-right:15px;" autocomplete="off" v-model.number="form.accessoriesSum"></el-input>
             </el-form-item>
-            <el-form-item label="人均配件" class="mr-3" label-width="70px">
-              <el-input style="width:140px; margin-right:15px;" autocomplete="off" v-model="form.average"></el-input>
-            </el-form-item>
             <el-form-item label="人工费" class="mr-3" label-width="70px">
               <el-input style="width:140px; margin-right:15px;" autocomplete="off" v-model.number="form.artificial"></el-input>
-            </el-form-item>
-            <el-form-item label="人均人工" class="mr-3" label-width="70px">
-              <el-input style="width:140px; margin-right:15px;" autocomplete="off" v-model.number="form.averagePrice"></el-input>
             </el-form-item>
             <el-form-item label="车费" class="mr-3" label-width="70px">
               <el-input style="width:140px; margin-right:15px;" autocomplete="off" v-model.number="form.fare"></el-input>
             </el-form-item>
+            <el-form-item label="人均配件" class="mr-3" label-width="70px">
+              <el-input style="width:140px; margin-right:15px;" autocomplete="off" v-model="form.average"></el-input>
+            </el-form-item>
+             <el-form-item label="人均人工" class="mr-3" label-width="70px">
+              <el-input style="width:140px; margin-right:15px;" autocomplete="off" v-model.number="form.averagePrice"></el-input>
+            </el-form-item>
+           
+            
             <el-form-item label="总计" class="mr-3" label-width="70px">
               <el-input style="width:140px; margin-right:15px;" autocomplete="off" v-model.number="form.sumTotal"></el-input>
             </el-form-item>
+           
           </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -263,6 +271,7 @@ export default {
         sumTotal: "",          // 总计
         averagePrice: "",      //   人均人工
       },
+      hotelNameList:[],
       dataop: {
         name: "",
         num: "",
@@ -280,11 +289,26 @@ export default {
   created() {
     this.getList();
     this.getAccessories(); //获取配件名称列表
+    this.gethotelNameList()
   },
   methods: {
+    gethotelNameList(){
+      this.http.QueryHotel({}).then(res=>{
+        this.hotelNameList = res.data
+      })
+    },
+    handleClose() {
+      this.$confirm("确定要关闭吗？")
+        .then((_) => {
+          this.dialogFormVisible = false;
+        })
+        .catch((_) => {
+          this.dialogFormVisible = true;
+        });
+    },
     peijianSum(item,index) { // 配件数量输入框,失去焦点计算当前行的总价
       this.$set(this.form.data[index], 'price',Number(localStorage.getItem(`${item.accessories}`)) ); // 先恢复数量 1 的单价
-      let sum = this.form.data[index].accessoriesShuLiang *this.form.data[index].price // 计算输入的数量 *单价 得到总价
+      let sum = (this.form.data[index].accessoriesShuLiang *this.form.data[index].price).toFixed(2) // 计算输入的数量 *单价 得到总价
       this.$set(this.form.data[index], 'price', sum); // 设置总价
     },
     sunAdnsub() { // 点击计算结果按钮 进行计算
@@ -297,9 +321,9 @@ export default {
         sum += Number(k.accessoriesShuLiang);
       });
       this.form.accessoriesSum = priceSum // 配件合计金额
-      this.$set(this.form, "average", sum / Number(this.form.peopleCount)); // 人均配件
+      this.$set(this.form, "average", (priceSum / Number(this.form.peopleCount)).toFixed(2) ); // 人均配件
 
-      this.form.averagePrice = this.form.artificial / this.form.peopleCount; // 人均人工
+      this.form.averagePrice = (this.form.artificial / this.form.peopleCount).toFixed(2); // 人均人工
       this.form.sumTotal = Number(this.form.accessoriesSum) + Number(this.form.artificial) + Number(this.form.fare); // 总计
 
     },
@@ -317,7 +341,7 @@ export default {
       this.accessories.forEach((i,index) => {
         if (i.name == item.accessories) {
           console.log(i,item,'0909')
-          info.push({ price: i.price, accessories: item.accessories ,accessoriesShuLiang:1});
+          info.push({ price: i.oneprice, accessories: item.accessories ,accessoriesShuLiang:1});
           localStorage.setItem(`${item.accessories}`,i.price)
         }
       });
