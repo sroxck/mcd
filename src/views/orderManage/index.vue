@@ -251,7 +251,11 @@
       <el-table-column label="餐厅名称" prop="diningName"></el-table-column>
       <el-table-column label="EPS号" prop="eps"></el-table-column>
       <el-table-column label="维修单号" prop="fixOrder"></el-table-column>
-      <el-table-column label="维修人员" prop="fixPeople"></el-table-column>
+      <el-table-column label="维修人员" prop="fixPeople">
+        <template  slot-scope="scope">
+          {{JSON.stringify(scope.row.fixPeople).replace(/"/g,'').replace(/]/g,'').replace('[','')}}
+        </template>
+      </el-table-column>
       <el-table-column label="人数" prop="peopleCount"></el-table-column>
       <el-table-column label="维修说明" prop="bz" v-if="showShuoMing"></el-table-column>
       <el-table-column label="配件合计" prop="accessoriesSum"></el-table-column>
