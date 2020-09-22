@@ -58,14 +58,14 @@
       stripe
     >
       <el-table-column label="序号" type="index" width="50px" align="center"></el-table-column>
-      <el-table-column label="城市" prop="hotelCity"></el-table-column>
-      <el-table-column label="餐厅编号" prop="hotelBianhao"></el-table-column>
-      <el-table-column label="餐厅名称" prop="hotelName"></el-table-column>
-      <el-table-column label="开业日期" prop="hotelTime"></el-table-column>
-      <el-table-column label="邮箱" prop="hotelEmail"></el-table-column>
-      <el-table-column label="餐厅电话" prop="hotelTel"></el-table-column>
-      <el-table-column label="餐厅地址" prop="hotelDizhi"></el-table-column>
-      <el-table-column fixed="right" label="操作" width="100">
+      <el-table-column label="城市" prop="hotelCity" ></el-table-column>
+      <el-table-column label="餐厅编号" width="120px" prop="hotelBianhao"></el-table-column>
+      <el-table-column label="餐厅名称"  prop="hotelName"></el-table-column>
+      <el-table-column label="开业日期" width="120px" prop="hotelTime"></el-table-column>
+      <el-table-column label="邮箱"  prop="hotelEmail"></el-table-column>
+      <el-table-column label="餐厅电话"  prop="hotelTel"></el-table-column>
+      <el-table-column label="餐厅地址"  prop="hotelDizhi"></el-table-column>
+      <el-table-column fixed="right" label="操作" width="100px">
         <template slot-scope="scope">
           <el-button type="text" size="small" @click="edit(scope.row)">编辑</el-button>
           <el-button type="text" size="small" @click="remove(scope.row._id)">删除</el-button>

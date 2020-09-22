@@ -13,6 +13,9 @@
           <el-form-item label="餐厅名称" label-width="70px" style="margin-right:20px;">
             <el-input placeholder="请输入餐厅名称" style="width:180px;" v-model="queryInfo.diningName"></el-input>
           </el-form-item>
+          <el-form-item label="维修说明" label-width="70px" style="margin-right:20px;">
+            <el-input placeholder="请输入维修说明" style="width:180px;" v-model="queryInfo.bz"></el-input>
+          </el-form-item>
           <el-form-item label="维修人员" label-width="70px" style="margin-right:20px;">
             <el-input placeholder="请输入维修人员" style="width:180px;" v-model="queryInfo.fixPeople"></el-input>
           </el-form-item>
