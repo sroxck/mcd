@@ -52,6 +52,12 @@ export default {
   removeHotel(params) {
     return this.post('/removeHotel',params)
   },
+  modifyOrder(params) {
+    return this.post('/modifyOrder',params)
+  },
+  removeOrder(params) {
+    return this.post('/removeOrder',params)
+  },
   getAccessories(params) {
     return this.post('/getAccessories',params)
   },

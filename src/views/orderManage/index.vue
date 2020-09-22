@@ -54,6 +54,7 @@
           </el-form-item>
           <el-button style @click="dialogFormVisible = true">新增</el-button>
           <el-button style @click="getList()">重置</el-button>
+          <el-button style @click="exportExcel()">导出</el-button>
         </el-col>
       </el-row>
     </el-form>
@@ -67,7 +68,8 @@
              <el-date-picker
               v-model="form.time"
               type="date"
-              format="yyyy - MM - dd"
+              format="yyyy-MM-dd"
+              value-format="yyyy-MM-dd"
                style="width:140px; margin-right:15px;"
               placeholder="选择日期">
             </el-date-picker>
@@ -76,10 +78,9 @@
             <el-input v-model="form.diningNum" autocomplete="off" style="width:140px; margin-right:15px;"></el-input>
           </el-form-item>
           <el-form-item label="餐厅名称" class="mr-3" label-width="70px">
-            <el-select v-model="form.diningName" style="width:140px; margin-right:15px;">
+            <el-select filterable v-model="form.diningName" style="width:140px; margin-right:15px;">
               <el-option v-for="(item,index) in hotelNameList" :key="index" :label="item.hotelName" :value="item.hotelName" ></el-option>
             </el-select>
-            <!-- <el-input v-model="form.diningName" autocomplete="off" style="width:140px; margin-right:15px;"></el-input> -->
           </el-form-item>
           <el-form-item label="EPS号" class="mr-3" label-width="70px">
             <el-input v-model="form.eps" autocomplete="off" style="width:140px; margin-right:15px;"></el-input>
@@ -91,10 +92,9 @@
             <el-input v-model="form.fixOrder" autocomplete="off" style="width:140px; margin-right:15px;"></el-input>
           </el-form-item>
           <el-form-item label="维修人员" class="mr-3" label-width="70px">
-            <el-select v-model="form.fixPeople" style="width:140px; margin-right:15px;">
+            <el-select filterable multiple v-model="form.fixPeople" style="width:140px; margin-right:15px;">
               <el-option v-for="(item,index) in fixPeopleList" :key="index" :label="item.name" :value="item.name" ></el-option>
             </el-select>
-            <!-- <el-input v-model="form.fixPeople" autocomplete="off" style="width:140px; margin-right:15px;"></el-input> -->
           </el-form-item>
           <el-form-item label="人数" class="mr-3" label-width="70px">
             <el-input v-model="form.peopleCount" autocomplete="off" style="width:140px; margin-right:15px;"></el-input>
@@ -157,7 +157,8 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="addItem">确 定</el-button>
+        <el-button type="primary" @click="addItem()" v-if="modifyButton">确 定</el-button>
+        <el-button type="primary" @click="editData()">确 定</el-button>
       </div>
     </el-dialog>
 
@@ -192,7 +193,7 @@
     </el-table>
 
     <!-- 修改的抽屉 -->
-    <el-drawer title="编辑配件信息" :visible.sync="drawer" :with-header="false" class="tk">
+    <!-- <el-dialog title="编辑配件信息" :visible.sync="drawer" :with-header="false" class="tk">
       <el-form :model="dataop" :inline="true" label-position="left" style="margin-top:50px;">
         <el-form-item label="配件名称" label-width="100px">
           <el-input v-model="dataop.name" autocomplete="off" style="width:140px;"></el-input>
@@ -223,7 +224,7 @@
         <el-button @click="editData">确 定</el-button>
         <el-button @click="drawer = false">取 消</el-button>
       </div>
-    </el-drawer>
+    </el-dialog> -->
 
     <pagination
       v-show="form.totalRow>0"
@@ -231,6 +232,7 @@
       :page.sync="form.pageNumber"
       :limit.sync="form.pageSize"
       @pagination="getList"
+      :page-sizes="[5,10,15,20,30,50,100]"
     />
   </div>
 </template>
@@ -251,9 +253,10 @@ export default {
       listLoading: false,
       dialogFormVisible: false,
       drawer: false,
-      showShuoMing:false,
+      showShuoMing:true,
       showBianHao:false,
-      showTime:false,
+      modifyButton:true,
+      showTime:true,
       accessories: [], // 配件名称列表
       form: {
         data: [{},],
@@ -263,14 +266,14 @@ export default {
         eps: "",              // eps 号
         number: "",           // 次数
         fixOrder: "",         // 维修单号
-        fixPeople: "",        // 维修人员
+        fixPeople: [],        // 维修人员
         peopleCount: "",      // 人数
         accessoriesSum: "",   //  配件合计
         average: "",          //  人均配件
         artificial: "100",    //  人工费
         fare: "40",           //   车费
         pageNumber: 1,
-        pageSize: 10,
+        pageSize: 15,
         totalRow: 100,
         sumTotal: "",          // 总计
         averagePrice: "",      //   人均人工
@@ -296,6 +299,9 @@ export default {
     this.gethotelNameList()
   },
   methods: {
+    exportExcel(){
+      console.log('导出');
+    },
     gethotelNameList(){
       this.http.QueryHotel({}).then(res=>{
         this.hotelNameList = res.data
@@ -371,7 +377,7 @@ export default {
       this.query = "";
     },
     remove(id) {
-      this.http.removePeiJian({ id }).then((res) => {
+      this.http.removeOrder({ id }).then((res) => {
         if (res.code == 200) {
           this.$notify.success("删除成功");
           this.getList();
@@ -379,27 +385,23 @@ export default {
       });
     },
     editData() {
-      this.http.modifyPeiJian(this.dataop).then((res) => {
+      this.http.modifyOrder(this.form).then((res) => {
         console.log(res, "22");
         if (res.code == 200) {
           this.getList();
           this.$notify.success("修改成功");
-          this.drawer = false;
+          this.dialogFormVisible = false;
         }
       });
     },
     edit(row) {
+      this.modifyButton = false
+      this.dialogFormVisible = true;
       console.log(row);
-      this.drawer = true;
-      this.dataop.name = row.name;
-      this.dataop.num = row.num;
-      this.dataop.id = row._id;
-      this.dataop.grop = row.grop;
-      this.dataop.bz = row.bz;
-      this.dataop.prnum = row.prnum;
-      this.dataop.price = row.price;
-      this.dataop.oneprice = row.oneprice;
-      this.dataop.vendor = row.vendor;
+      row.pageNumber= 1,
+      row.pageSize= 15,
+      row.totalRow= this.form.totalRow,
+      this.$set(this,'form',row)
     },
     addItem() {
       this.dialogFormVisible = false;
