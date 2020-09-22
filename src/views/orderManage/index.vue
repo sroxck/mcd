@@ -112,7 +112,7 @@
               </el-select>
             </el-form-item>
             <el-form-item label="配件数量" class="mr-3" label-width="70px">
-              <el-input style="width:140px; margin-right:15px;" autocomplete="off" v-model.number="item.accessoriesShuLiang"></el-input>
+              <el-input style="width:140px; margin-right:15px;" autocomplete="off" v-model.number="item.accessoriesShuLiang" @blur="peijianSum(item,index)"></el-input>
             </el-form-item>
             <el-form-item label="配件价格" class="mr-3" label-width="70px">
               <el-input style="width:140px; margin-right:15px;" autocomplete="off" v-model.number="item.price"></el-input>
@@ -282,6 +282,13 @@ export default {
     this.getAccessories(); //获取配件名称列表
   },
   methods: {
+    peijianSum(item,index) { // 配件数量离开鼠标事件
+    let sum = 0;
+    console.log(item,'item');
+      this.$set(this.form.data[index], 'price',Number(localStorage.getItem(`${item.accessories}`)) );
+      sum = this.form.data[index].accessoriesShuLiang *this.form.data[index].price
+      this.$set(this.form.data[index], 'price', sum);
+    },
     sunAdnsub() {
       this.form.sumTotal =
         Number(this.form.accessoriesSum) +
@@ -289,10 +296,13 @@ export default {
         Number(this.form.fare);
 
       let sum = 0;
+      let priceSum = 0;
       this.form.data.forEach((k) => {
-        console.log(k.accessoriesShuLiang, "accessoriesShuLiang");
+        console.log(k, "accessoriesShuLiang");
+        priceSum+= Number(k.price);
         sum += Number(k.accessoriesShuLiang);
       });
+      this.form.accessoriesSum = priceSum
       this.$set(this.form, "average", sum / Number(this.form.peopleCount));
 
       this.form.averagePrice = this.form.artificial / this.form.peopleCount;
@@ -308,18 +318,20 @@ export default {
       //自动带入配件单价,合计价格
       let info = [];
       this.$set(this.form.data, index, info[0]);
-      this.accessories.forEach((i) => {
+      this.accessories.forEach((i,index) => {
         if (i.name == item.accessories) {
-          info.push({ price: i.price, accessories: item.accessories });
+          console.log(i,item,'0909')
+          info.push({ price: i.price, accessories: item.accessories ,accessoriesShuLiang:1});
+          localStorage.setItem(`${item.accessories}`,i.price)
         }
       });
       this.$set(this.form.data, index, info[0]);
-      this.form.accessoriesSum = 0;
-      this.form.data.forEach((k) => {
-        if (k.price != undefined && k.price != null) {
-          this.form.accessoriesSum += Number(k.price);
-        }
-      });
+      // this.form.accessoriesSum = 0;
+      // this.form.data.forEach((k) => {
+      //   if (k.price != undefined && k.price != null) {
+      //     this.form.accessoriesSum += Number(k.price);
+      //   }
+      // });
     },
 
     queryTable() {
