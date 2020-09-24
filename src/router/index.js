@@ -100,6 +100,20 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/notify',
+    component: Layout,
+    redirect: '/notify/index',
+    meta: { title: '公告管理', icon: 'el-icon-s-help' },
+    children: [
+      {
+        path: 'notify',
+        name: 'notify',
+        component: () => import('@/views/notify/index'),
+        meta: { title: '公告管理', icon: 'example' }
+      },
+    ]
+  },
+  {
     path: '/hotel',
     component: Layout,
     redirect: '/hotel/index',
