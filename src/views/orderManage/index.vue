@@ -458,6 +458,7 @@ export default {
       // 配件数量输入框,失去焦点计算当前行的总价
       if (this.form.data[index].accessoriesShuLiang > this.currentNum ) {
         this.$notify.error('库存不足')
+        this.form.data[index].accessoriesShuLiang = 1
       }else{
        this.$set(
         this.form.data[index],
