@@ -12,7 +12,8 @@ import '@/styles/style.scss' // 全局 css
 import App from './App'
 import store from './store'
 import router from './router'
-
+import JsonExcel from 'vue-json-excel'
+Vue.component('downloadExcel', JsonExcel)
 import '@/icons' // 引入 icon 图标
 import '@/permission' // permission control
 

@@ -62,7 +62,7 @@
     >
       <el-table-column label="序号" type="index" width="50px" align="center"></el-table-column>
       <el-table-column label="配件名称" prop="name"></el-table-column>
-      <!-- <el-table-column label="配件数量" prop="num"></el-table-column> -->
+      <el-table-column label="配件数量" prop="num"></el-table-column>
       <el-table-column label="配件厂商" prop="vendor"></el-table-column>
       <el-table-column label="配件编号" prop="prnum"></el-table-column>
       <el-table-column label="配件进价" prop="price"></el-table-column>

@@ -55,8 +55,13 @@
             </el-dropdown>
           </el-form-item>
           <el-button style @click="dialogFormVisible = true">新增</el-button>
-          <el-button style @click="getList()">重置</el-button>
-          <el-button style @click="exportExcel()">导出</el-button>
+          <download-excel class="export-excel-wrapper ml-2"  :data="json_data"
+              name="订单表.xls">
+              <!-- 上面可以自定义自己的样式，还可以引用其他组件button -->
+              <el-button type="primary" size="small">导出</el-button>
+        </download-excel>
+          <el-button style @click="getList()" class="ml-2">重置</el-button>
+          
         </el-col>
       </el-row>
     </el-form>
@@ -154,7 +159,7 @@
                 placeholder="请选择"
                 @change="accessoriesChange(index,item)"
               >
-                <el-option v-for="k in accessories" :key="k._id" :label="k.name" :value="k.name"></el-option>
+                <el-option v-for="k in accessories" :key="k._id" :label="k.name" :value="k.name" ></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="配件数量" class="mr-3" label-width="70px" prop="accessoriesShuLiang">
@@ -324,6 +329,9 @@ export default {
   },
   data() {
     return {
+      json_fields:{},
+      json_data:[],
+      json_meta: [[{"key":"charset", "value":"utf-8" }]],
       queryInfo: {},
       query: "",
       tableList: [],
@@ -356,6 +364,7 @@ export default {
         sumTotal: "", // 总计
         averagePrice: "", //   人均人工
       },
+      currentNum:0,
       hotelNameList: [],
       dataop: {
         name: "",
@@ -375,10 +384,12 @@ export default {
     this.getList();
     this.getAccessories(); //获取配件名称列表
     this.gethotelNameList();
+    this.allList()
   },
   methods: {
     closeDia() {
       this.dialogFormVisible = false;
+      this.modifyButton = true;
       this.form = {
         data: [{}],
         time: "", // 时间
@@ -401,7 +412,6 @@ export default {
       };
     },
     exportExcel() {
-      console.log("导出");
     },
     gethotelNameList() {
       this.http.QueryHotel({}).then((res) => {
@@ -414,6 +424,7 @@ export default {
     handleClose() {
       this.$confirm("确定要关闭吗？")
         .then((_) => {
+          this.modifyButton = true;
           this.dialogFormVisible = false;
           this.form = {
             data: [{}],
@@ -429,9 +440,9 @@ export default {
             average: "", //  人均配件
             artificial: Number("100").toFixed(2), //  人工费
             fare: Number("40").toFixed(2), //   车费
-            pageNumber: 1,
-            pageSize: 15.0,
-            totalRow: 100.0,
+            pageNumber: this.form.pageNumber,
+            pageSize: this.form.pageSize,
+            totalRow: this.form.totalRow,
             sumTotal: "", // 总计
             averagePrice: "", //   人均人工
           };
@@ -440,9 +451,15 @@ export default {
           this.dialogFormVisible = true;
         });
     },
+    handelPeijian(i,l){
+      console.log(i,l,'iandl');
+    },
     peijianSum(item, index) {
       // 配件数量输入框,失去焦点计算当前行的总价
-      this.$set(
+      if (this.form.data[index].accessoriesShuLiang > this.currentNum ) {
+        this.$notify.error('库存不足')
+      }else{
+       this.$set(
         this.form.data[index],
         "price",
         Number(localStorage.getItem(`${item.accessories}`))
@@ -451,6 +468,8 @@ export default {
         this.form.data[index].accessoriesShuLiang * this.form.data[index].price
       ).toFixed(2); // 计算输入的数量 *单价 得到总价
       this.$set(this.form.data[index], "price", sum); // 设置总价
+      }
+     
     },
     sunAdnsub() {
       // 点击计算结果按钮 进行计算
@@ -483,15 +502,17 @@ export default {
       // 查询所有配件名称
       this.http.QueryPeijian({}).then((res) => {
         this.accessories = res.data;
+        console.log(res.data,'res.data');
       });
     },
     accessoriesChange(index, item, k) {
+      this.currentNum = this.accessories[index].num
+      console.log(this.accessories[index].num,'itemandindex');
       //自动带入配件单价,合计价格
       let info = [];
       this.$set(this.form.data, index, info[0]);
       this.accessories.forEach((i, index) => {
         if (i.name == item.accessories) {
-          console.log(i, item, "0909");
           info.push({
             price: Number(i.oneprice).toFixed(2),
             accessories: item.accessories,
@@ -501,22 +522,40 @@ export default {
         }
       });
       this.$set(this.form.data, index, info[0]);
-      // this.form.accessoriesSum = 0;
-      // this.form.data.forEach((k) => {
-      //   if (k.price != undefined && k.price != null) {
-      //     this.form.accessoriesSum += Number(k.price);
-      //   }
-      // });
     },
 
     queryTable() {
-      console.log(this.query);
       this.http.QueryOrder({ query: this.query }).then((res) => {
         this.tableList = res.data;
         this.listLoading = false;
         this.form.totalRow = res.total;
       });
       this.query = "";
+    },
+    allList() {
+      this.http.QueryOrder({}).then((res) => {
+         var result = res.data.map(item=>{
+           return {
+             '维修时间':item.time,
+             '餐厅编号':item.diningNum,
+             '餐厅名称':item.diningName,
+             'EPS号':item.eps,
+             '维修单号':item.fixOrder,
+             '维修人员':item.fixPeople.join(','),
+             '人数':item.peopleCount,
+             '维修说明':item.bz,
+             '配件合计':item.accessoriesSum,
+             '人工费':item.artificial,
+             '车费':item.fare,
+             '总计':item.sumTotal,
+             '人均配件':item.average,
+             '人均人工':item.averagePrice,
+             '次数':item.number,
+             }
+           });
+        this.json_data = result;
+        this.listLoading = false;
+      });
     },
     remove(id) {
       this.http.removeOrder({ id }).then((res) => {
@@ -528,10 +567,11 @@ export default {
     },
     editData() {
       this.http.modifyOrder(this.form).then((res) => {
-        console.log(res, "22");
         if (res.code == 200) {
           this.getList();
           this.$notify.success("修改成功");
+          this.modifyButton = true;
+
           this.dialogFormVisible = false;
           this.form = {
             data: [{}],
@@ -559,7 +599,6 @@ export default {
     edit(row) {
       this.modifyButton = false;
       this.dialogFormVisible = true;
-      console.log(row);
       (row.pageNumber = 1),
         (row.pageSize = 15),
         (row.totalRow = this.form.totalRow),
@@ -568,7 +607,6 @@ export default {
     addItem() {
       this.dialogFormVisible = false;
       this.http.addOrder(this.form).then((res) => {
-        console.log(res, "22");
         if (res.code == 200) {
           this.getList();
           this.$notify.success("新增成功");
@@ -593,10 +631,9 @@ export default {
             averagePrice: "", //   人均人工
           };
         } else {
-          this.$notify.success("新增失败,请联系管理员");
+          this.$notify.error("新增失败,配件库存不足");
         }
       });
-      console.log(this.form, "pp4");
     },
     getList() {
       this.listLoading = true;
@@ -620,5 +657,8 @@ export default {
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
+}
+.export-excel-wrapper {
+  display: inline-block;
 }
 </style>
