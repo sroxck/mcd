@@ -81,7 +81,7 @@ export const constantRoutes = [
         path: 'addKc',
         name: 'addKc',
         component: () => import('@/views/addSome/addKc'),
-        meta: { title: '配件管理', icon: 'table' }
+        meta: { title: '配件管理', icon: 'dashboard' }
       },
     ]
   },
@@ -95,7 +95,7 @@ export const constantRoutes = [
         path: 'inventory',
         name: 'inventory',
         component: () => import('@/views/inventory/index'),
-        meta: { title: '库存管理', icon: 'table' }
+        meta: { title: '库存管理', icon: 'example' }
       },
     ]
   },
@@ -109,7 +109,7 @@ export const constantRoutes = [
         path: 'hotel',
         name: 'hotel',
         component: () => import('@/views/hotel/index'),
-        meta: { title: '餐厅管理', icon: 'table' }
+        meta: { title: '餐厅管理', icon: 'user' }
       },
     ]
   },

@@ -10,7 +10,7 @@
       <el-table-column label="序号" type="index" width="50px" align="center"></el-table-column>
       <el-table-column label="配件名称" prop="name"></el-table-column>
       <el-table-column v-for="(item,index) in 31" :key="index" :label="(item)+''" width="40px" :prop="`time.jiuyue.${item}`" ></el-table-column>
-      <el-table-column label="当前剩余数量" prop="num"></el-table-column>
+      <el-table-column label="当前剩余数量" prop="num"  ></el-table-column>
     </el-table>
     <pagination v-show="form.totalRow>0" :total="form.totalRow" :page.sync="form.pageNumber" :limit.sync="form.pageSize" @pagination="getList" :page-sizes="[5,10,15,20,30,50,100]" />
 
