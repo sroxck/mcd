@@ -2,14 +2,7 @@
   <div class="app-container">
     <!-- 查询表单 绑定 query字段-->
     <el-row style="margin-bottom:20px">
-      <el-input
-        placeholder="请输入餐厅名称,按回车查询"
-        size="small"
-        prefix-icon="el-icon-search"
-        v-model="query"
-        @change="queryTable"
-        style="width:280px;"
-      ></el-input>
+      <el-input placeholder="请输入餐厅名称,按回车查询" size="small" prefix-icon="el-icon-search" v-model="query" @change="queryTable" style="width:280px;"></el-input>
       <el-button @click="dialogFormVisible = true" size="small" style="margin-left:10px;">新增餐厅</el-button>
       <el-button style @click="getList()" size="small">重置</el-button>
     </el-row>
@@ -48,23 +41,15 @@
       </div>
     </el-dialog>
     <!-- 展示的表格 绑定 tableList数组-->
-    <el-table
-      v-loading="listLoading"
-      :data="tableList"
-      element-loading-text="Loading"
-      size="small"
-      border
-      fit
-      stripe
-    >
+    <el-table v-loading="listLoading" :data="tableList" element-loading-text="Loading" size="small" border fit stripe>
       <el-table-column label="序号" type="index" width="50px" align="center"></el-table-column>
-      <el-table-column label="城市" prop="hotelCity" ></el-table-column>
+      <el-table-column label="城市" prop="hotelCity"></el-table-column>
       <el-table-column label="餐厅编号" width="120px" prop="hotelBianhao"></el-table-column>
-      <el-table-column label="餐厅名称"  prop="hotelName"></el-table-column>
+      <el-table-column label="餐厅名称" prop="hotelName"></el-table-column>
       <el-table-column label="开业日期" width="120px" prop="hotelTime"></el-table-column>
-      <el-table-column label="邮箱"  prop="hotelEmail"></el-table-column>
-      <el-table-column label="餐厅电话"  prop="hotelTel"></el-table-column>
-      <el-table-column label="餐厅地址"  prop="hotelDizhi"></el-table-column>
+      <el-table-column label="邮箱" prop="hotelEmail"></el-table-column>
+      <el-table-column label="餐厅电话" prop="hotelTel"></el-table-column>
+      <el-table-column label="餐厅地址" prop="hotelDizhi"></el-table-column>
       <el-table-column fixed="right" label="操作" width="100px">
         <template slot-scope="scope">
           <el-button type="text" size="small" @click="edit(scope.row)">编辑</el-button>
@@ -73,13 +58,8 @@
       </el-table-column>
     </el-table>
     <!-- 编辑的抽屉 绑定 modifyData对象-->
-    <el-dialog
-      title="编辑配件信息"
-      :visible.sync="drawer"
-      :before-close="handleClose"
-      class="tk"
-    >
-      <el-form :model="modifyData" :inline="true" label-position="left" >
+    <el-dialog title="编辑配件信息" :visible.sync="drawer" :before-close="handleClose" class="tk">
+      <el-form :model="modifyData" :inline="true" label-position="left">
         <el-form-item label="城市" label-width="70px">
           <el-input v-model="modifyData.hotelCity" autocomplete="off" style="width:120px;"></el-input>
         </el-form-item>
@@ -102,20 +82,13 @@
           <el-input v-model="modifyData.hotelDizhi" autocomplete="off" style="width:120px;"></el-input>
         </el-form-item>
       </el-form>
-       <div slot="footer" class="dialog-footer">
+      <div slot="footer" class="dialog-footer">
         <el-button @click="editData">确 定</el-button>
         <el-button @click="drawer = false">取 消</el-button>
       </div>
     </el-dialog>
     <!-- 分页组件 -->
-    <pagination
-      v-show="form.totalRow>0"
-      :total="form.totalRow"
-      :page.sync="form.pageNumber"
-      :limit.sync="form.pageSize"
-      @pagination="getList"
-      :page-sizes="[5,10,15,20,30,50,100]"
-    />
+    <pagination v-show="form.totalRow>0" :total="form.totalRow" :page.sync="form.pageNumber" :limit.sync="form.pageSize" @pagination="getList" :page-sizes="[5,10,15,20,30,50,100]" />
   </div>
 </template>
 
@@ -134,15 +107,17 @@ export default {
       query: "", // 查询输入框绑定的字段
       tableList: [], // 表格绑定的数组
       listLoading: false, // 表格 loading 字段
-      dialogFormVisible: false,  // 控制新增弹框打开
+      dialogFormVisible: false, // 控制新增弹框打开
       drawer: false, // 控制修改抽屉打开
-      form: { // 新增绑定的对象
+      form: {
+        // 新增绑定的对象
         data: [{}], // 用于新增一组数据
         pageNumber: 1, // 分页查询需要的字段
         pageSize: 15, // 分页查询需要的字段
         totalRow: 0, // 分页查询需要的字段
       },
-      modifyData: { // 修改抽屉绑定的对象
+      modifyData: {
+        // 修改抽屉绑定的对象
         hotelDizhi: "",
         hotelTel: "",
         hotelEmail: "",

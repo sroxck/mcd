@@ -86,6 +86,20 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/inventory',
+    component: Layout,
+    redirect: '/inventory/index',
+    meta: { title: '餐厅管理', icon: 'el-icon-s-help' },
+    children: [
+      {
+        path: 'inventory',
+        name: 'inventory',
+        component: () => import('@/views/inventory/index'),
+        meta: { title: '库存管理', icon: 'table' }
+      },
+    ]
+  },
+  {
     path: '/hotel',
     component: Layout,
     redirect: '/hotel/index',

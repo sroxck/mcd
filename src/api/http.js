@@ -58,6 +58,9 @@ export default {
   removeOrder(params) {
     return this.post('/removeOrder',params)
   },
+  getKucun(params) {
+    return this.get('/getKucun',params)
+  },
   getAccessories(params) {
     return this.post('/getAccessories',params)
   },
