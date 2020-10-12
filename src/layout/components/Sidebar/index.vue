@@ -53,7 +53,7 @@ export default {
     }
   },
   mounted(){
-     this.le()
+    //  this.le()
   },
   methods: {
     le(){

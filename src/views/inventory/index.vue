@@ -103,17 +103,21 @@ export default {
       });
       this.query = "";
     },
+    
     getList() {
       this.listLoading = true;
+      
       let info = {
         pageNumber: this.form.pageNumber,
         pageSize: this.form.pageSize,
       };
       this.http.QueryPeijian(info).then((res) => {
-        console.log(res);
+        
         this.tableList1 = res.data;
+        
         this.tableList2 = res.data;
         this.tableList3 = res.data;
+        
         this.form.totalRow = res.total;
         this.listLoading = false;
       });

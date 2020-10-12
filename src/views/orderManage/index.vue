@@ -260,6 +260,8 @@ export default {
     this.gethotelNameList();
     this.allList();
   },
+  mounted () {
+  },
   methods: {
     closeDia() {
       this.dialogFormVisible = false;
@@ -372,6 +374,10 @@ export default {
         Number(this.form.taxes)+
         Number(this.form.cost)
       ).toFixed(2); // 总计
+      // this.form.taxes = (this.form.sumTotal / 1.09).toFixed(2)
+      // // 配件总计-配件进价-车费成本-税费
+      // this.form.cost = this.form.sumTotal - this.form.accessoriesSum - this.form.taxes - this.form.fare
+      
     },
 
     getAccessories() {
