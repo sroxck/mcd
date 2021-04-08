@@ -1,6 +1,7 @@
 import Vue from 'vue'
 
 import 'normalize.css/normalize.css' // 初始化 css
+import vuetify from '@/plugins/vuetify' // path to vuetify export
 
 import ElementUI from 'element-ui' // elementUI 组件库
 import 'element-ui/lib/theme-chalk/index.css'
@@ -41,6 +42,7 @@ Vue.use(ElementUI, { size: 'small',});
 Vue.config.productionTip = false
 
 new Vue({
+  vuetify,
   el: '#app',
   router,
   store,

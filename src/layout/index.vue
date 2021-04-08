@@ -6,7 +6,10 @@
       <div :class="{'fixed-header':fixedHeader}">
         <navbar />
       </div>
+      <v-app>
       <app-main />
+
+      </v-app>
     </div>
   </div>
 </template>

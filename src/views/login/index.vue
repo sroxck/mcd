@@ -69,15 +69,15 @@ export default {
     async signup() {
       if (this.form.password != this.form.confirmPassword)
         return this.$notify.info("密码输入不一致,请重新输入");
-      const { data } = await this.http.signup(this.form);
-      data.code == 200
+      const { code} = await this.http.signup(this.form);
+      code == 200
         ? this.$notify.success("注册成功")
         : this.$notify.error("注册失败");
     },
     async signin() {
-      const { data } = await this.http.signin(this.form);
-      data.code == 200
-        ? this.$router.push({ path: "form" })
+      const { code} = await this.http.signin(this.form);
+      code == 200
+        ? this.$router.push({ path: "inventory/inventory" })
         : this.$notify.error("登录失败");
     },
   },
